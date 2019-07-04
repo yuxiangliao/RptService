@@ -87,7 +87,7 @@ public class RptController {
 	@Autowired
 	private SysRptService sysRptService;
 
-	@RequestMapping("/findTest")
+	@RequestMapping(value = "/findTest",method = RequestMethod.GET)
 	public HashMap<String,Object> findTest(){
 		HashMap<String,String> params = new HashMap<String, String>();
 		params.put("1","01");
