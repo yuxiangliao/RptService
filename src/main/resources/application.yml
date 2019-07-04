@@ -1,0 +1,54 @@
+#数据源的配置
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:6299/smartvendgn?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+    password: vend2019123
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+  jackson:
+    time-zone: GMT+8
+       
+
+
+
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: com.inhe.rpt.model
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+
+jade:
+  filePath: jade/
+  cycle: 2
+  cycleType: 1
+  nums: 10
+  startup: N  #是否立即启动
+  supplyMonth: -12 #补算前x个月数据
+  supplyDay: -60 #补算前x天数据
+  
+server:
+  port: 9888
+logging:
+  level: 
+    com.inhe.rpt.mapper: debug
+  file: ./logs/core.log
+  
+  
+    

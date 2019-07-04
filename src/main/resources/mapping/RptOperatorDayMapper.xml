@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inhe.rpt.mapper.RptOperatorDayMapper" >
+  <resultMap id="BaseResultMap" type="com.inhe.rpt.model.RptOperatorDay" >
+    <id column="OPERATOR_CODE" property="operatorCode" jdbcType="VARCHAR" />
+    <id column="DATA_PERIOD" property="dataPeriod" jdbcType="VARCHAR" />
+    <result column="BRANCH_CODE" property="branchCode" jdbcType="VARCHAR" />
+    <result column="NET_KWH" property="netKwh" jdbcType="DECIMAL" />
+    <result column="NET_AMT" property="netAmt" jdbcType="DECIMAL" />
+    <result column="STAMP_TAX" property="stampTax" jdbcType="DECIMAL" />
+    <result column="TVA_AMT" property="tvaAmt" jdbcType="DECIMAL" />
+    <result column="KWH_AMT" property="kwhAmt" jdbcType="DECIMAL" />
+    <result column="FEE_AMT" property="feeAmt" jdbcType="DECIMAL" />
+    <result column="FEE_TVA" property="feeTva" jdbcType="DECIMAL" />
+    <result column="FEE1" property="fee1" jdbcType="DECIMAL" />
+    <result column="FEE1_TVA" property="fee1Tva" jdbcType="DECIMAL" />
+    <result column="FEE2" property="fee2" jdbcType="DECIMAL" />
+    <result column="FEE2_TVA" property="fee2Tva" jdbcType="DECIMAL" />
+    <result column="FEE3" property="fee3" jdbcType="DECIMAL" />
+    <result column="FEE3_TVA" property="fee3Tva" jdbcType="DECIMAL" />
+    <result column="FEE4" property="fee4" jdbcType="DECIMAL" />
+    <result column="FEE4_TVA" property="fee4Tva" jdbcType="DECIMAL" />
+    <result column="FEE5" property="fee5" jdbcType="DECIMAL" />
+    <result column="FEE5_TVA" property="fee5Tva" jdbcType="DECIMAL" />
+    <result column="ARREAR_AMT" property="arrearAmt" jdbcType="DECIMAL" />
+    <result column="ARREAR_TVA" property="arrearTva" jdbcType="DECIMAL" />
+    <result column="BUY_TIMES" property="buyTimes" jdbcType="INTEGER" />
+    <result column="FIELD1" property="field1" jdbcType="VARCHAR" />
+    <result column="FIELD2" property="field2" jdbcType="VARCHAR" />
+    <result column="UDATE" property="udate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.inhe.rpt.model.RptOperatorDay" extends="BaseResultMap" >
+    <result column="FIELD3" property="field3" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    OPERATOR_CODE, DATA_PERIOD, BRANCH_CODE, NET_KWH, NET_AMT, STAMP_TAX, TVA_AMT, KWH_AMT, 
+    FEE_AMT, FEE_TVA, FEE1, FEE1_TVA, FEE2, FEE2_TVA, FEE3, FEE3_TVA, FEE4, FEE4_TVA, 
+    FEE5, FEE5_TVA, ARREAR_AMT, ARREAR_TVA, BUY_TIMES, FIELD1, FIELD2, UDATE
+  </sql>
+  <sql id="Blob_Column_List" >
+    FIELD3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="com.inhe.rpt.model.RptOperatorDayKey" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from rpt_operator_day
+    where OPERATOR_CODE = #{operatorCode,jdbcType=VARCHAR}
+      and DATA_PERIOD = #{dataPeriod,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.inhe.rpt.model.RptOperatorDayKey" >
+    delete from rpt_operator_day
+    where OPERATOR_CODE = #{operatorCode,jdbcType=VARCHAR}
+      and DATA_PERIOD = #{dataPeriod,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.inhe.rpt.model.RptOperatorDay" >
+    insert into rpt_operator_day (OPERATOR_CODE, DATA_PERIOD, BRANCH_CODE, 
+      NET_KWH, NET_AMT, STAMP_TAX, 
+      TVA_AMT, KWH_AMT, FEE_AMT, 
+      FEE_TVA, FEE1, FEE1_TVA, 
+      FEE2, FEE2_TVA, FEE3, 
+      FEE3_TVA, FEE4, FEE4_TVA, 
+      FEE5, FEE5_TVA, ARREAR_AMT, 
+      ARREAR_TVA, BUY_TIMES, FIELD1, 
+      FIELD2, UDATE, FIELD3
+      )
+    values (#{operatorCode,jdbcType=VARCHAR}, #{dataPeriod,jdbcType=VARCHAR}, #{branchCode,jdbcType=VARCHAR}, 
+      #{netKwh,jdbcType=DECIMAL}, #{netAmt,jdbcType=DECIMAL}, #{stampTax,jdbcType=DECIMAL}, 
+      #{tvaAmt,jdbcType=DECIMAL}, #{kwhAmt,jdbcType=DECIMAL}, #{feeAmt,jdbcType=DECIMAL}, 
+      #{feeTva,jdbcType=DECIMAL}, #{fee1,jdbcType=DECIMAL}, #{fee1Tva,jdbcType=DECIMAL}, 
+      #{fee2,jdbcType=DECIMAL}, #{fee2Tva,jdbcType=DECIMAL}, #{fee3,jdbcType=DECIMAL}, 
+      #{fee3Tva,jdbcType=DECIMAL}, #{fee4,jdbcType=DECIMAL}, #{fee4Tva,jdbcType=DECIMAL}, 
+      #{fee5,jdbcType=DECIMAL}, #{fee5Tva,jdbcType=DECIMAL}, #{arrearAmt,jdbcType=DECIMAL}, 
+      #{arrearTva,jdbcType=DECIMAL}, #{buyTimes,jdbcType=INTEGER}, #{field1,jdbcType=VARCHAR}, 
+      #{field2,jdbcType=VARCHAR}, #{udate,jdbcType=TIMESTAMP}, #{field3,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.inhe.rpt.model.RptOperatorDay" >
+    insert into rpt_operator_day
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="operatorCode != null" >
+        OPERATOR_CODE,
+      </if>
+      <if test="dataPeriod != null" >
+        DATA_PERIOD,
+      </if>
+      <if test="branchCode != null" >
+        BRANCH_CODE,
+      </if>
+      <if test="netKwh != null" >
+        NET_KWH,
+      </if>
+      <if test="netAmt != null" >
+        NET_AMT,
+      </if>
+      <if test="stampTax != null" >
+        STAMP_TAX,
+      </if>
+      <if test="tvaAmt != null" >
+        TVA_AMT,
+      </if>
+      <if test="kwhAmt != null" >
+        KWH_AMT,
+      </if>
+      <if test="feeAmt != null" >
+        FEE_AMT,
+      </if>
+      <if test="feeTva != null" >
+        FEE_TVA,
+      </if>
+      <if test="fee1 != null" >
+        FEE1,
+      </if>
+      <if test="fee1Tva != null" >
+        FEE1_TVA,
+      </if>
+      <if test="fee2 != null" >
+        FEE2,
+      </if>
+      <if test="fee2Tva != null" >
+        FEE2_TVA,
+      </if>
+      <if test="fee3 != null" >
+        FEE3,
+      </if>
+      <if test="fee3Tva != null" >
+        FEE3_TVA,
+      </if>
+      <if test="fee4 != null" >
+        FEE4,
+      </if>
+      <if test="fee4Tva != null" >
+        FEE4_TVA,
+      </if>
+      <if test="fee5 != null" >
+        FEE5,
+      </if>
+      <if test="fee5Tva != null" >
+        FEE5_TVA,
+      </if>
+      <if test="arrearAmt != null" >
+        ARREAR_AMT,
+      </if>
+      <if test="arrearTva != null" >
+        ARREAR_TVA,
+      </if>
+      <if test="buyTimes != null" >
+        BUY_TIMES,
+      </if>
+      <if test="field1 != null" >
+        FIELD1,
+      </if>
+      <if test="field2 != null" >
+        FIELD2,
+      </if>
+      <if test="udate != null" >
+        UDATE,
+      </if>
+      <if test="field3 != null" >
+        FIELD3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="operatorCode != null" >
+        #{operatorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dataPeriod != null" >
+        #{dataPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="branchCode != null" >
+        #{branchCode,jdbcType=VARCHAR},
+      </if>
+      <if test="netKwh != null" >
+        #{netKwh,jdbcType=DECIMAL},
+      </if>
+      <if test="netAmt != null" >
+        #{netAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="stampTax != null" >
+        #{stampTax,jdbcType=DECIMAL},
+      </if>
+      <if test="tvaAmt != null" >
+        #{tvaAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="kwhAmt != null" >
+        #{kwhAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="feeAmt != null" >
+        #{feeAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="feeTva != null" >
+        #{feeTva,jdbcType=DECIMAL},
+      </if>
+      <if test="fee1 != null" >
+        #{fee1,jdbcType=DECIMAL},
+      </if>
+      <if test="fee1Tva != null" >
+        #{fee1Tva,jdbcType=DECIMAL},
+      </if>
+      <if test="fee2 != null" >
+        #{fee2,jdbcType=DECIMAL},
+      </if>
+      <if test="fee2Tva != null" >
+        #{fee2Tva,jdbcType=DECIMAL},
+      </if>
+      <if test="fee3 != null" >
+        #{fee3,jdbcType=DECIMAL},
+      </if>
+      <if test="fee3Tva != null" >
+        #{fee3Tva,jdbcType=DECIMAL},
+      </if>
+      <if test="fee4 != null" >
+        #{fee4,jdbcType=DECIMAL},
+      </if>
+      <if test="fee4Tva != null" >
+        #{fee4Tva,jdbcType=DECIMAL},
+      </if>
+      <if test="fee5 != null" >
+        #{fee5,jdbcType=DECIMAL},
+      </if>
+      <if test="fee5Tva != null" >
+        #{fee5Tva,jdbcType=DECIMAL},
+      </if>
+      <if test="arrearAmt != null" >
+        #{arrearAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="arrearTva != null" >
+        #{arrearTva,jdbcType=DECIMAL},
+      </if>
+      <if test="buyTimes != null" >
+        #{buyTimes,jdbcType=INTEGER},
+      </if>
+      <if test="field1 != null" >
+        #{field1,jdbcType=VARCHAR},
+      </if>
+      <if test="field2 != null" >
+        #{field2,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null" >
+        #{udate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="field3 != null" >
+        #{field3,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.inhe.rpt.model.RptOperatorDay" >
+    update rpt_operator_day
+    <set >
+      <if test="branchCode != null" >
+        BRANCH_CODE = #{branchCode,jdbcType=VARCHAR},
+      </if>
+      <if test="netKwh != null" >
+        NET_KWH = #{netKwh,jdbcType=DECIMAL},
+      </if>
+      <if test="netAmt != null" >
+        NET_AMT = #{netAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="stampTax != null" >
+        STAMP_TAX = #{stampTax,jdbcType=DECIMAL},
+      </if>
+      <if test="tvaAmt != null" >
+        TVA_AMT = #{tvaAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="kwhAmt != null" >
+        KWH_AMT = #{kwhAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="feeAmt != null" >
+        FEE_AMT = #{feeAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="feeTva != null" >
+        FEE_TVA = #{feeTva,jdbcType=DECIMAL},
+      </if>
+      <if test="fee1 != null" >
+        FEE1 = #{fee1,jdbcType=DECIMAL},
+      </if>
+      <if test="fee1Tva != null" >
+        FEE1_TVA = #{fee1Tva,jdbcType=DECIMAL},
+      </if>
+      <if test="fee2 != null" >
+        FEE2 = #{fee2,jdbcType=DECIMAL},
+      </if>
+      <if test="fee2Tva != null" >
+        FEE2_TVA = #{fee2Tva,jdbcType=DECIMAL},
+      </if>
+      <if test="fee3 != null" >
+        FEE3 = #{fee3,jdbcType=DECIMAL},
+      </if>
+      <if test="fee3Tva != null" >
+        FEE3_TVA = #{fee3Tva,jdbcType=DECIMAL},
+      </if>
+      <if test="fee4 != null" >
+        FEE4 = #{fee4,jdbcType=DECIMAL},
+      </if>
+      <if test="fee4Tva != null" >
+        FEE4_TVA = #{fee4Tva,jdbcType=DECIMAL},
+      </if>
+      <if test="fee5 != null" >
+        FEE5 = #{fee5,jdbcType=DECIMAL},
+      </if>
+      <if test="fee5Tva != null" >
+        FEE5_TVA = #{fee5Tva,jdbcType=DECIMAL},
+      </if>
+      <if test="arrearAmt != null" >
+        ARREAR_AMT = #{arrearAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="arrearTva != null" >
+        ARREAR_TVA = #{arrearTva,jdbcType=DECIMAL},
+      </if>
+      <if test="buyTimes != null" >
+        BUY_TIMES = #{buyTimes,jdbcType=INTEGER},
+      </if>
+      <if test="field1 != null" >
+        FIELD1 = #{field1,jdbcType=VARCHAR},
+      </if>
+      <if test="field2 != null" >
+        FIELD2 = #{field2,jdbcType=VARCHAR},
+      </if>
+      <if test="udate != null" >
+        UDATE = #{udate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="field3 != null" >
+        FIELD3 = #{field3,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where OPERATOR_CODE = #{operatorCode,jdbcType=VARCHAR}
+      and DATA_PERIOD = #{dataPeriod,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.inhe.rpt.model.RptOperatorDay" >
+    update rpt_operator_day
+    set BRANCH_CODE = #{branchCode,jdbcType=VARCHAR},
+      NET_KWH = #{netKwh,jdbcType=DECIMAL},
+      NET_AMT = #{netAmt,jdbcType=DECIMAL},
+      STAMP_TAX = #{stampTax,jdbcType=DECIMAL},
+      TVA_AMT = #{tvaAmt,jdbcType=DECIMAL},
+      KWH_AMT = #{kwhAmt,jdbcType=DECIMAL},
+      FEE_AMT = #{feeAmt,jdbcType=DECIMAL},
+      FEE_TVA = #{feeTva,jdbcType=DECIMAL},
+      FEE1 = #{fee1,jdbcType=DECIMAL},
+      FEE1_TVA = #{fee1Tva,jdbcType=DECIMAL},
+      FEE2 = #{fee2,jdbcType=DECIMAL},
+      FEE2_TVA = #{fee2Tva,jdbcType=DECIMAL},
+      FEE3 = #{fee3,jdbcType=DECIMAL},
+      FEE3_TVA = #{fee3Tva,jdbcType=DECIMAL},
+      FEE4 = #{fee4,jdbcType=DECIMAL},
+      FEE4_TVA = #{fee4Tva,jdbcType=DECIMAL},
+      FEE5 = #{fee5,jdbcType=DECIMAL},
+      FEE5_TVA = #{fee5Tva,jdbcType=DECIMAL},
+      ARREAR_AMT = #{arrearAmt,jdbcType=DECIMAL},
+      ARREAR_TVA = #{arrearTva,jdbcType=DECIMAL},
+      BUY_TIMES = #{buyTimes,jdbcType=INTEGER},
+      FIELD1 = #{field1,jdbcType=VARCHAR},
+      FIELD2 = #{field2,jdbcType=VARCHAR},
+      UDATE = #{udate,jdbcType=TIMESTAMP},
+      FIELD3 = #{field3,jdbcType=LONGVARCHAR}
+    where OPERATOR_CODE = #{operatorCode,jdbcType=VARCHAR}
+      and DATA_PERIOD = #{dataPeriod,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.inhe.rpt.model.RptOperatorDay" >
+    update rpt_operator_day
+    set BRANCH_CODE = #{branchCode,jdbcType=VARCHAR},
+      NET_KWH = #{netKwh,jdbcType=DECIMAL},
+      NET_AMT = #{netAmt,jdbcType=DECIMAL},
+      STAMP_TAX = #{stampTax,jdbcType=DECIMAL},
+      TVA_AMT = #{tvaAmt,jdbcType=DECIMAL},
+      KWH_AMT = #{kwhAmt,jdbcType=DECIMAL},
+      FEE_AMT = #{feeAmt,jdbcType=DECIMAL},
+      FEE_TVA = #{feeTva,jdbcType=DECIMAL},
+      FEE1 = #{fee1,jdbcType=DECIMAL},
+      FEE1_TVA = #{fee1Tva,jdbcType=DECIMAL},
+      FEE2 = #{fee2,jdbcType=DECIMAL},
+      FEE2_TVA = #{fee2Tva,jdbcType=DECIMAL},
+      FEE3 = #{fee3,jdbcType=DECIMAL},
+      FEE3_TVA = #{fee3Tva,jdbcType=DECIMAL},
+      FEE4 = #{fee4,jdbcType=DECIMAL},
+      FEE4_TVA = #{fee4Tva,jdbcType=DECIMAL},
+      FEE5 = #{fee5,jdbcType=DECIMAL},
+      FEE5_TVA = #{fee5Tva,jdbcType=DECIMAL},
+      ARREAR_AMT = #{arrearAmt,jdbcType=DECIMAL},
+      ARREAR_TVA = #{arrearTva,jdbcType=DECIMAL},
+      BUY_TIMES = #{buyTimes,jdbcType=INTEGER},
+      FIELD1 = #{field1,jdbcType=VARCHAR},
+      FIELD2 = #{field2,jdbcType=VARCHAR},
+      UDATE = #{udate,jdbcType=TIMESTAMP}
+    where OPERATOR_CODE = #{operatorCode,jdbcType=VARCHAR}
+      and DATA_PERIOD = #{dataPeriod,jdbcType=VARCHAR}
+  </update>
+</mapper>

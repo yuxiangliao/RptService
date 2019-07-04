@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inhe.rpt.mapper.SysReportMapper" >
+  <resultMap id="BaseResultMap" type="com.inhe.rpt.model.SysReport" >
+    <id column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="CYCLE" property="cycle" jdbcType="INTEGER" />
+    <result column="CYCLE_TYPE" property="cycleType" jdbcType="VARCHAR" />
+    <result column="BASE_TIME" property="baseTime" jdbcType="TIMESTAMP" />
+    <result column="STARTUP_TIME" property="startupTime" jdbcType="TIMESTAMP" />
+    <result column="EXECING" property="execing" jdbcType="CHAR" />
+    <result column="ACTIVED" property="actived" jdbcType="VARCHAR" />
+    <result column="COPERATOR" property="coperator" jdbcType="VARCHAR" />
+    <result column="CDATE" property="cdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.inhe.rpt.model.SysReport" extends="BaseResultMap" >
+    <result column="PARAM" property="param" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CODE, DESCRIPTION, CYCLE, CYCLE_TYPE, BASE_TIME, STARTUP_TIME, EXECING, ACTIVED, 
+    COPERATOR, CDATE
+  </sql>
+  <sql id="Blob_Column_List" >
+    PARAM
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sys_report
+    where CODE = #{code,jdbcType=VARCHAR}
+  </select>
+
+  <select id="findTask" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sys_report
+     where EXECING='N' AND ACTIVED='Y' AND STARTUP_TIME &lt;=NOW()
+  </select>
+
+  <select id="findTest" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    select A.FeeAMT,A.FeeVAT,
+    <foreach collection="params.keys" item="key" separator=",">
+        T${key}.Amt as Fee${key}_AMT,T${key}.VAT as Fee${key}_VAT
+    </foreach>
+    from bz_meter_vend A
+    <foreach collection="params.keys" item="key" separator=" ">
+      left join bz_meter_fee T${key} on T${key}.FeeType='03' and T${key}.RefCode=A.Code
+      and T${key}.FeeCode = '${params[key]}'
+    </foreach>
+    where A.Code = '00011160930094047668'
+
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.inhe.rpt.model.SysReport" >
+    update sys_report
+    <set >
+      <if test="description != null" >
+        DESCRIPTION = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="cycle != null" >
+        CYCLE = #{cycle,jdbcType=INTEGER},
+      </if>
+      <if test="cycleType != null" >
+        CYCLE_TYPE = #{cycleType,jdbcType=VARCHAR},
+      </if>
+      <if test="baseTime != null" >
+        BASE_TIME = #{baseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startupTime != null" >
+        STARTUP_TIME = #{startupTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="execing != null" >
+        EXECING = #{execing,jdbcType=CHAR},
+      </if>
+      <if test="actived != null" >
+        ACTIVED = #{actived,jdbcType=VARCHAR},
+      </if>
+      <if test="coperator != null" >
+        COPERATOR = #{coperator,jdbcType=VARCHAR},
+      </if>
+      <if test="cdate != null" >
+        CDATE = #{cdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="param != null" >
+        PARAM = #{param,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where CODE = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.inhe.rpt.model.SysReport" >
+    update sys_report
+    set DESCRIPTION = #{description,jdbcType=VARCHAR},
+      CYCLE = #{cycle,jdbcType=INTEGER},
+      CYCLE_TYPE = #{cycleType,jdbcType=VARCHAR},
+      BASE_TIME = #{baseTime,jdbcType=TIMESTAMP},
+      STARTUP_TIME = #{startupTime,jdbcType=TIMESTAMP},
+      EXECING = #{execing,jdbcType=CHAR},
+      ACTIVED = #{actived,jdbcType=VARCHAR},
+      COPERATOR = #{coperator,jdbcType=VARCHAR},
+      CDATE = #{cdate,jdbcType=TIMESTAMP},
+      PARAM = #{param,jdbcType=LONGVARCHAR}
+    where CODE = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.inhe.rpt.model.SysReport" >
+    update sys_report
+    set DESCRIPTION = #{description,jdbcType=VARCHAR},
+      CYCLE = #{cycle,jdbcType=INTEGER},
+      CYCLE_TYPE = #{cycleType,jdbcType=VARCHAR},
+      BASE_TIME = #{baseTime,jdbcType=TIMESTAMP},
+      STARTUP_TIME = #{startupTime,jdbcType=TIMESTAMP},
+      EXECING = #{execing,jdbcType=CHAR},
+      ACTIVED = #{actived,jdbcType=VARCHAR},
+      COPERATOR = #{coperator,jdbcType=VARCHAR},
+      CDATE = #{cdate,jdbcType=TIMESTAMP}
+    where CODE = #{code,jdbcType=VARCHAR}
+  </update>
+</mapper>

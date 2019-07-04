@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inhe.rpt.mapper.RptMonthMapper" >
+
+    <insert id="insertRptMeterMonth">
+        INSERT INTO rpt_meter_month(DEVICE_CODE,DATA_PERIOD,BRANCH_CODE,REF_CODE,FULL_NAME,METER_NUM
+        ,TARIFF_CODE,AREA_CODE,NET_KWH,NET_AMT,STAMP_TAX,TVA_AMT,KWH_AMT,FEE_AMT,FEE_TVA,FEE1
+        ,FEE1_TVA,FEE2,FEE2_TVA,FEE3,FEE3_TVA,FEE4,FEE4_TVA,ARREAR_AMT,ARREAR_TVA,BUY_TIMES)
+        SELECT
+        DEVICE_CODE,
+        DATA_PERIOD,
+        BRANCH_CODE,
+        REF_CODE,
+        FULL_NAME,
+        METER_NUM,
+        TARIFF_CODE,
+        AREA_CODE,
+        SUM(A.NET_KWH) AS NET_KWH,
+        SUM(A.NET_AMT) AS NET_AMT,
+        SUM(A.STAMP_TAX) AS STAMP_TAX,
+        SUM(A.TVA_AMT) AS TVA_AMT,
+        SUM(A.KWH_AMT) AS KWH_AMT,
+        SUM(A.FEE_AMT) AS FEE_AMT,
+        SUM(A.FEE_TVA) AS FEE_TVA,
+        SUM(A.FEE1) AS FEE1,
+        SUM(A.FEE1_TVA) AS FEE1_TVA,
+        SUM(A.FEE2) AS FEE2,
+        SUM(A.FEE2_TVA) AS FEE2_TVA,
+        SUM(A.FEE3) AS FEE3,
+        SUM(A.FEE3_TVA) AS FEE3_TVA,
+        SUM(A.FEE4) AS FEE4,
+        SUM(A.FEE4_TVA) AS FEE4_TVA,
+        SUM(A.ARREAR_AMT) ARREAR_AMT,
+        SUM(A.ARREAR_TVA) ARREAR_TVA,
+        sum(A.BUY_TIMES) AS BUY_TIMES
+        FROM rpt_meter_day A
+        WHERE
+         <![CDATA[ A.DATA_PERIOD >=#{dFrom,jdbcType=VARCHAR}  AND A.DATA_PERIOD<#{dTo,jdbcType=VARCHAR}  ]]>
+        GROUP BY A.DEVICE_CODE
+    </insert>
+
+    <insert id="insertRptBranchMonth">
+        INSERT INTO rpt_branch_month (
+        BRANCH_CODE,
+        DATA_PERIOD,
+        BRANCH_NAME,
+        NET_KWH,
+        NET_AMT,
+        STAMP_TAX,
+        TVA_AMT,
+        KWH_AMT,
+        FEE_AMT,
+        FEE_TVA,
+        FEE1,
+        FEE1_TVA,
+        FEE2,
+        FEE2_TVA,
+        FEE3,
+        FEE3_TVA,
+        FEE4,
+        FEE4_TVA,
+        ARREAR_AMT,
+        ARREAR_TVA,
+        BUY_TIMES
+        ) SELECT
+        BRANCH_CODE,
+        DATA_PERIOD,
+        BRANCH_NAME,
+        SUM(A.NET_KWH) AS NET_KWH,
+        SUM(A.NET_AMT) AS NET_AMT,
+        SUM(A.STAMP_TAX) AS STAMP_TAX,
+        SUM(A.TVA_AMT) AS TVA_AMT,
+        SUM(A.KWH_AMT) AS KWH_AMT,
+        SUM(A.FEE_AMT) AS FEE_AMT,
+        SUM(A.FEE_TVA) AS FEE_TVA,
+        SUM(A.FEE1) AS FEE1,
+        SUM(A.FEE1_TVA) AS FEE1_TVA,
+        SUM(A.FEE2) AS FEE2,
+        SUM(A.FEE2_TVA) AS FEE2_TVA,
+        SUM(A.FEE3) AS FEE3,
+        SUM(A.FEE3_TVA) AS FEE3_TVA,
+        SUM(A.FEE4) AS FEE4,
+        SUM(A.FEE4_TVA) AS FEE4_TVA,
+        SUM(A.ARREAR_AMT) ARREAR_AMT,
+        SUM(A.ARREAR_TVA) ARREAR_TVA,
+        sum(A.BUY_TIMES) AS BUY_TIMES
+        FROM
+        rpt_branch_day A
+        WHERE
+        <![CDATA[ A.DATA_PERIOD >= #{dFrom,jdbcType=VARCHAR} AND A.DATA_PERIOD < #{dTo,jdbcType=VARCHAR}  ]]>
+        GROUP BY A.BRANCH_CODE
+    </insert>
+
+    <insert id="insertRptOperatorMonth">
+        INSERT INTO rpt_operator_month (
+        OPERATOR_CODE,
+        DATA_PERIOD,
+        BRANCH_CODE,
+        NET_KWH,
+        NET_AMT,
+        STAMP_TAX,
+        TVA_AMT,
+        KWH_AMT,
+        FEE_AMT,
+        FEE_TVA,
+        FEE1,
+        FEE1_TVA,
+        FEE2,
+        FEE2_TVA,
+        FEE3,
+        FEE3_TVA,
+        FEE4,
+        FEE4_TVA,
+        ARREAR_AMT,
+        ARREAR_TVA,
+        BUY_TIMES
+        ) SELECT
+        OPERATOR_CODE,
+        DATA_PERIOD,
+        BRANCH_CODE,
+        SUM(A.NET_KWH) AS NET_KWH,
+        SUM(A.NET_AMT) AS NET_AMT,
+        SUM(A.STAMP_TAX) AS STAMP_TAX,
+        SUM(A.TVA_AMT) AS TVA_AMT,
+        SUM(A.KWH_AMT) AS KWH_AMT,
+        SUM(A.FEE_AMT) AS FEE_AMT,
+        SUM(A.FEE_TVA) AS FEE_TVA,
+        SUM(A.FEE1) AS FEE1,
+        SUM(A.FEE1_TVA) AS FEE1_TVA,
+        SUM(A.FEE2) AS FEE2,
+        SUM(A.FEE2_TVA) AS FEE2_TVA,
+        SUM(A.FEE3) AS FEE3,
+        SUM(A.FEE3_TVA) AS FEE3_TVA,
+        SUM(A.FEE4) AS FEE4,
+        SUM(A.FEE4_TVA) AS FEE4_TVA,
+        SUM(A.ARREAR_AMT) ARREAR_AMT,
+        SUM(A.ARREAR_TVA) ARREAR_TVA,
+        sum(A.BUY_TIMES) AS BUY_TIMES
+        FROM
+        rpt_operator_day A
+        WHERE
+        <![CDATA[ A.DATA_PERIOD >= #{dFrom,jdbcType=VARCHAR} AND A.DATA_PERIOD < #{dTo,jdbcType=VARCHAR}  ]]>
+        GROUP BY A.OPERATOR_CODE
+    </insert>
+
+    <delete id="deleteMonthData" >
+        delete from ${tableName} where <![CDATA[ DATA_PERIOD=#{dataPeriod,jdbcType=VARCHAR}  ]]>
+    </delete>
+
+    <select id="getLastMonth" resultType="java.lang.String">
+        select DATA_PERIOD from ${tableName}
+        where <![CDATA[ DATA_PERIOD>=#{dFrom,jdbcType=VARCHAR} and DATA_PERIOD<#{dTo,jdbcType=VARCHAR} ]]>
+         group by DATA_PERIOD
+    </select>
+
+
+
+</mapper>

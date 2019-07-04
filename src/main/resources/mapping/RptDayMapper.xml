@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inhe.rpt.mapper.RptDayMapper" >
+
+    <insert id="insertRptMeterDay">
+        INSERT INTO rpt_meter_day(DEVICE_CODE,DATA_PERIOD,BRANCH_CODE,REF_CODE,FULL_NAME,METER_NUM
+        ,TARIFF_CODE,AREA_CODE,NET_KWH,NET_AMT,STAMP_TAX,TVA_AMT,KWH_AMT,FEE_AMT,FEE_TVA,FEE1
+        ,FEE1_TVA,FEE2,FEE2_TVA,FEE3,FEE3_TVA,FEE4,FEE4_TVA,FEE5,FEE5_TVA,ARREAR_AMT,ARREAR_TVA,BUY_TIMES)
+        SELECT
+        A.RegCode AS DEVICE_CODE,
+        DATE_FORMAT(#{dFrom,jdbcType=DATE},'%Y%m%d') AS DATA_PERIOD,
+        A.BranchCode AS BRANCH_CODE,
+        A.RefCode AS REF_CODE,
+        A.FullName AS FULL_NAME,
+        A.MeterNum AS METER_NUM,
+        A.TariffCode AS TARIFF_CODE,
+        A.AreaCode AS  AREA_CODE,
+        SUM(A.VendQty) AS NET_KWH,
+        SUM(A.NetAMT) AS NET_AMT,
+        SUM(A.StampTax) AS STAMP_TAX,
+        SUM(A.VAT) AS TVA_AMT,
+        SUM(A.VendVAT) AS KWH_AMT,
+        SUM(A.FeeAMT) AS FEE_AMT,
+        SUM(A.FeeVAT) AS FEE_TVA,
+        SUM(B.Fee) AS FEE1,
+        SUM(b.VAT) AS FEE1_VAT,
+        SUM(C.Fee) AS FEE2,
+        SUM(C.VAT) AS FEE2_VAT,
+        SUM(D.Fee) AS FEE3,
+        SUM(D.VAT) AS FEE3_VAT,
+        SUM(E.Fee) AS FEE4,
+        SUM(E.VAT) AS FEE4_VAT,
+        SUM(F.Fee) AS FEE5,
+        SUM(F.VAT) AS FEE5_VAT,
+        SUM(A.ArrearAMT-A.ArrearVAT) ARREAR_AMT,
+        SUM(A.ArrearVAT) ARREAR_TVA,
+        COUNT(A.Code) AS BUY_TIMES
+        FROM
+        bz_meter_vend A
+        LEFT JOIN bz_meter_fee B ON B.FeeType='03' AND B.RefCode=A.`Code` AND B.FeeCode='001'
+        LEFT JOIN bz_meter_fee C ON C.FeeType='03' AND C.RefCode=A.`Code` AND C.FeeCode='002'
+        LEFT JOIN bz_meter_fee D ON D.FeeType='03' AND D.RefCode=A.`Code` AND D.FeeCode='003'
+        LEFT JOIN bz_meter_fee E ON E.FeeType='03' AND E.RefCode=A.`Code` AND E.FeeCode='004'
+         LEFT JOIN bz_meter_fee F ON F.FeeType='03' AND F.RefCode=A.`Code` AND F.FeeCode='005'
+        WHERE
+        <![CDATA[ A.VendDate >= #{dFrom,jdbcType=DATE} AND A.VendDate < #{dTo,jdbcType=DATE}  ]]>
+        GROUP BY A.RegCode
+    </insert>
+
+    <insert id="insertRptBranchDay">
+        INSERT INTO rpt_branch_day(BRANCH_CODE,DATA_PERIOD,BRANCH_NAME,NET_KWH,NET_AMT
+        ,STAMP_TAX,TVA_AMT,KWH_AMT,FEE_AMT,FEE_TVA,FEE1,FEE1_TVA,FEE2,FEE2_TVA,FEE3,FEE3_TVA
+        ,FEE4,FEE4_TVA,FEE5,FEE5_TVA,ARREAR_AMT,ARREAR_TVA,BUY_TIMES)
+        SELECT
+        A.BranchCode AS BRANCH_CODE,
+        DATE_FORMAT(#{dFrom,jdbcType=DATE},'%Y%m%d') AS DATA_PERIOD,
+        G.Name AS BRANCH_NAME,
+        SUM(A.VendQty) AS NET_KWH,
+        SUM(A.NetAMT) AS NET_AMT,
+        SUM(A.StampTax) AS STAMP_TAX,
+        SUM(A.VAT) AS TVA_AMT,
+        SUM(A.VendVAT) AS KWH_AMT,
+        SUM(A.FeeAMT) AS FEE_AMT,
+        SUM(A.FeeVAT) AS FEE_TVA,
+        SUM(B.Fee) AS FEE1,
+        SUM(b.VAT) AS FEE1_VAT,
+        SUM(C.Fee) AS FEE2,
+        SUM(C.VAT) AS FEE2_VAT,
+        SUM(D.Fee) AS FEE3,
+        SUM(D.VAT) AS FEE3_VAT,
+        SUM(E.Fee) AS FEE4,
+        SUM(E.VAT) AS FEE4_VAT,
+        SUM(F.Fee) AS FEE5,
+        SUM(F.VAT) AS FEE5_VAT,
+        SUM(A.ArrearAMT-A.ArrearVAT) ARREAR_AMT,
+        SUM(A.ArrearVAT) ARREAR_TVA,
+        count(A.Code) as BUY_TIMES
+        FROM
+        bz_meter_vend A
+        LEFT JOIN bz_meter_fee B ON B.FeeType='03' AND B.RefCode=A.`Code` AND B.FeeCode='001'
+        LEFT JOIN bz_meter_fee C ON C.FeeType='03' AND C.RefCode=A.`Code` AND C.FeeCode='002'
+        LEFT JOIN bz_meter_fee D ON D.FeeType='03' AND D.RefCode=A.`Code` AND D.FeeCode='003'
+        LEFT JOIN bz_meter_fee E ON E.FeeType='03' AND E.RefCode=A.`Code` AND E.FeeCode='004'
+        LEFT JOIN bz_meter_fee F ON F.FeeType='03' AND F.RefCode=A.`Code` AND F.FeeCode='005'
+        left JOIN bz_branch G ON A.BranchCode = G.Code
+        WHERE
+        <![CDATA[ A.VendDate >= #{dFrom,jdbcType=DATE} AND A.VendDate < #{dTo,jdbcType=DATE}  ]]>
+        GROUP BY A.BranchCode
+    </insert>
+
+    <insert id="insertRptOperatorDay">
+        INSERT INTO rpt_Operator_day(OPERATOR_CODE,DATA_PERIOD,BRANCH_CODE,NET_KWH,NET_AMT
+        ,STAMP_TAX,TVA_AMT,KWH_AMT,FEE_AMT,FEE_TVA,FEE1,FEE1_TVA,FEE2,FEE2_TVA,FEE3,FEE3_TVA
+        ,FEE4,FEE4_TVA,FEE5,FEE5_TVA,ARREAR_AMT,ARREAR_TVA,BUY_TIMES)
+        SELECT
+        A.COperator AS OPERATOR_CODE,
+        DATE_FORMAT(#{dFrom,jdbcType=DATE},'%Y%m%d') AS DATA_PERIOD,
+        A.BranchCode AS BRANCH_CODE,
+        SUM(A.VendQty) AS NET_KWH,
+        SUM(A.NetAMT) AS NET_AMT,
+        SUM(A.StampTax) AS STAMP_TAX,
+        SUM(A.VAT) AS TVA_AMT,
+        SUM(A.VendVAT) AS KWH_AMT,
+        SUM(A.FeeAMT) AS FEE_AMT,
+        SUM(A.FeeVAT) AS FEE_TVA,
+        SUM(B.Fee) AS FEE1,
+        SUM(b.VAT) AS FEE1_VAT,
+        SUM(C.Fee) AS FEE2,
+        SUM(C.VAT) AS FEE2_VAT,
+        SUM(D.Fee) AS FEE3,
+        SUM(D.VAT) AS FEE3_VAT,
+        SUM(E.Fee) AS FEE4,
+        SUM(E.VAT) AS FEE4_VAT,
+        SUM(F.Fee) AS FEE5,
+        SUM(F.VAT) AS FEE5_VAT,
+        SUM(A.ArrearAMT-A.ArrearVAT) ARREAR_AMT,
+        SUM(A.ArrearVAT) ARREAR_TVA,
+        count(A.Code) as BUY_TIMES
+        FROM
+        bz_meter_vend A
+        LEFT JOIN bz_meter_fee B ON B.FeeType='03' AND B.RefCode=A.`Code` AND B.FeeCode='001'
+        LEFT JOIN bz_meter_fee C ON C.FeeType='03' AND C.RefCode=A.`Code` AND C.FeeCode='002'
+        LEFT JOIN bz_meter_fee D ON D.FeeType='03' AND D.RefCode=A.`Code` AND D.FeeCode='003'
+        LEFT JOIN bz_meter_fee E ON E.FeeType='03' AND E.RefCode=A.`Code` AND E.FeeCode='004'
+        LEFT JOIN bz_meter_fee F ON F.FeeType='03' AND F.RefCode=A.`Code` AND F.FeeCode='005'
+        WHERE
+        <![CDATA[ A.VendDate >= #{dFrom,jdbcType=DATE} AND A.VendDate < #{dTo,jdbcType=DATE}  ]]>
+        GROUP BY A.COperator
+    </insert>
+
+    <delete id="deleteDayData" >
+        delete from ${tableName} where <![CDATA[ DATA_PERIOD=#{dataPeriod,jdbcType=VARCHAR}  ]]>
+    </delete>
+
+    <select id="getLastDay" resultType="java.lang.String">
+        select DATA_PERIOD from ${tableName}
+        where <![CDATA[ DATA_PERIOD>=#{dFrom,jdbcType=VARCHAR} and DATA_PERIOD<#{dTo,jdbcType=VARCHAR} ]]>
+         group by DATA_PERIOD
+    </select>
+
+</mapper>
