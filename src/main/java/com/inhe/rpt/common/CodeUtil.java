@@ -1,5 +1,7 @@
 package com.inhe.rpt.common;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 public class CodeUtil {
@@ -48,6 +50,33 @@ public class CodeUtil {
 		switch (cycleType){
 			case "1"://mins
 				result = String.format("0 0/%s * * * ?", cycle);
+				break;
+			case "2"://hours
+				result = String.format("0 0 0/%s * * ?", cycle);
+				break;
+			case "3"://days
+				result = String.format("0 0 0 0/%s * ?", cycle);
+				break;
+			case "4"://months
+				result = String.format("0 0 0 0 1/%s ?", cycle);
+				break;
+			case "5"://years
+				result = String.format("0 0 0 0 0 1/%s", cycle);
+				break;
+			default:
+				result = "0 0 0/1 * * ?";
+		}
+		return result;
+	}
+
+	public static String getTaskRuleEx(String cycle, String cycleType, Date startup){
+		String result="";
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(startup);
+		switch (cycleType){
+			case "1"://mins
+				int mins = calendar.get(Calendar.MINUTE);
+				result = String.format("0 %d/%s * * * ?", cycle);
 				break;
 			case "2"://hours
 				result = String.format("0 0 0/%s * * ?", cycle);

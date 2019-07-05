@@ -2,7 +2,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:6299/smartvendgn?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://127.0.0.1:6299/smartvend?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
     password: vend2019123
     type: com.alibaba.druid.pool.DruidDataSource
